@@ -32,7 +32,7 @@ security_scan:
       - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"
  
 build_and_push:
-  stage: build_and_deploy
+  stage: build_and_push
   script:
     - echo "Building docker image for $CHANGED_APP and pushing to ECR"
   only:
