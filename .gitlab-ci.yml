@@ -2,57 +2,33 @@ stages:
 - unit_test
 - security_scan
 - build_and_push
-- deploy_to_dev
+- deploy_pipeline
 
 variables:
-  DEV_BRANCH: dev
+  MS_NAME: gcr-adservice
+  MS_VERSION: v0.8.1
 
 unit_test:
   stage: unit_test
   script:
-    - echo "Running unit tests for micro service"
-  only:
-    refs:
-      - merge_requests
-    variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"
+    - echo "Running unit tests for micro service $MS_NAME"
 
 security_scan:
   stage: security_scan
   script:
-    - echo "Running SAST scan for micro service"
-  only:
-    refs:
-      - merge_requests
-    variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"
-
+    - echo "Running SAST scan for micro service $MS_NAME"
+ 
 build_and_push:
   stage: build_and_push
   script:
-    - echo "Building docker image for micro service and pushing to ECR"
-  only:
-    refs:
-      - merge_requests
-    variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"
+    - echo "Building docker image $MS_NAME:$MS_VERSION and pushing to ECR"
 
-deploy_to_dev:
-  stage: deploy_to_dev
-  script:
-    - git config --global user.name "GitlabCI"
-    - git config --global user.email "gitlab@example.com"
-
-    - git fetch origin $CI_COMMIT_REF_NAME
-    - git checkout $CI_COMMIT_REF_NAME
-
-    - git fetch origin $DEV_BRANCH
-    - git checkout $DEV_BRANCH
-
-    - git merge --no-ff $CI_COMMIT_REF_NAME
-    - git push https://$GITLAB_USER:$ACCESS_TOKEN@gitlab.com/twn-devsecops-bootcamp/latest/online-boutique.git $DEV_BRANCH
-  only:
-    refs:
-      - merge_requests
-    variables:
-      - $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"
+trigger_deploy_pipeline:
+  stage: deploy_pipeline
+  trigger:
+    project: twn-devsecops-bootcamp/latest/online-boutique-gitops
+    branch: main
+    strategy: depend
+  variables:
+    MS_NAME: $MS_NAME
+    MS_VERSION: $MS_VERSION
