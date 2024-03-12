@@ -6,8 +6,7 @@ stages:
 
 variables:
   MS_NAME: gcr-adservice
-  MS_VERSION: v0.8.1
-  TEST: "bla"
+  MS_VERSION: v0.8.0
 
 unit_test:
   stage: unit_test
@@ -30,6 +29,3 @@ trigger_deploy_pipeline:
     project: twn-devsecops-bootcamp/latest/online-boutique-gitops
     branch: main
     strategy: depend
-  variables:
-    MS_NAME: gcr-adservice
-    MS_VERSION: v0.8.1
