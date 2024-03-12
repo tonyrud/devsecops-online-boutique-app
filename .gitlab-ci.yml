@@ -30,5 +30,5 @@ trigger_deploy_pipeline:
     branch: main
     strategy: depend
   variables:
-    MS_NAME: gcr-adservice
-    MS_VERSION: $MS_VERSION
+    MS_NAME: "$MS_NAME"
+    MS_VERSION: "$MS_VERSION"
