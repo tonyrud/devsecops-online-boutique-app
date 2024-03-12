@@ -6,7 +6,7 @@ stages:
 
 variables:
   MS_NAME: gcr-adservice
-  MS_VERSION: v0.8.0
+  MS_VERSION: v0.8.1
 
 unit_test:
   stage: unit_test
