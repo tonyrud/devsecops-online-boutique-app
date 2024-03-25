@@ -29,4 +29,3 @@ trigger_deploy_pipeline:
     project: twn-devsecops-bootcamp/latest/online-boutique-gitops
     branch: main
     strategy: depend
-  
