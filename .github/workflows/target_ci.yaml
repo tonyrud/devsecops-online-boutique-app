@@ -1,17 +1,20 @@
-name: Trigger Target Workflow
+name: Trigger ArgoCD Release
+# Triggers the version change workflow in the target repository
+# This is the workflow that will be triggered in the target repository:
+# https://github.com/tonyrud/devsecops-online-boutique-k8s/blob/main/.github/workflows/trigger_deployment.yaml
 
 on:
   workflow_dispatch:
     inputs:
       target_service:
-        description: 'Input a service name (e.g., demo-app)'
+        description: 'Input a service name (e.g., gcr-adservice)'
         required: true
       target_version:
         description: 'Input a version (e.g., v1.0.0)'
         required: true
 
 jobs:
-  trigger:
+  trigger_argocd_release:
     runs-on: ubuntu-latest
 
     steps:
