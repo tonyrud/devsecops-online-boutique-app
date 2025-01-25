@@ -21,6 +21,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      # manaully call workflow in another repository via REST API
       # - name: Trigger Workflow in Another Repository
       #   run: |
       #     sh trigger_app_version_change.sh \
@@ -33,6 +34,7 @@ jobs:
         id: return_dispatch
         with:
           ref: main
+          workflow_timeout_seconds: 120 # Default: 300
           token: ${{ secrets.PAT }}
           repo: devsecops-online-boutique-k8s
           owner: tonyrud
