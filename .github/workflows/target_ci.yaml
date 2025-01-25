@@ -21,26 +21,28 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Trigger Workflow in Another Repository
-        run: |
-          sh trigger_app_version_change.sh \
-          ${{ secrets.PAT }} \
-          ${{ github.event.inputs.target_service }} \
-          ${{ github.event.inputs.target_version }}
+      # - name: Trigger Workflow in Another Repository
+      #   run: |
+      #     sh trigger_app_version_change.sh \
+      #     ${{ secrets.PAT }} \
+      #     ${{ github.event.inputs.target_service }} \
+      #     ${{ github.event.inputs.target_version }}
 
       - name: Dispatch an action and get the run ID
         uses: codex-/return-dispatch@v1
         id: return_dispatch
         with:
-          token: ${{ github.token }}
+          ref: main
+          token: ${{ secrets.PAT }}
           repo: devsecops-online-boutique-k8s
           owner: tonyrud
           workflow: trigger_deployment.yaml
+          workflow_inputs: '{ "service": "${{ github.event.inputs.target_service }}", "version": "${{ github.event.inputs.target_version }}" }'
       
       - name: Await Run ID ${{ steps.return_dispatch.outputs.run_id }}
         uses: Codex-/await-remote-run@v1.0.0
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.PAT }}
           repo: return-dispatch
           owner: codex-
           run_id: ${{ steps.return_dispatch.outputs.run_id }}
