@@ -30,7 +30,7 @@ jobs:
       #     ${{ github.event.inputs.target_version }}
 
       - name: Dispatch an action and get the run ID
-        uses: codex-/return-dispatch@v1
+        uses: codex-/return-dispatch@v2
         id: return_dispatch
         with:
           ref: main
@@ -38,6 +38,7 @@ jobs:
           token: ${{ secrets.PAT }}
           repo: devsecops-online-boutique-k8s
           owner: tonyrud
+          workflow_job_steps_retry_seconds: 10
           workflow: trigger_deployment.yaml
           workflow_inputs: '{ "service": "${{ github.event.inputs.target_service }}", "version": "${{ github.event.inputs.target_version }}" }'
       
