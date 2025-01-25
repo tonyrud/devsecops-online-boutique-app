@@ -13,6 +13,11 @@ on:
         description: 'Input a version (e.g., v1.0.0)'
         required: true
 
+env:
+  PAT: ${{ secrets.PAT }}
+  DISPATCH_REPO: devsecops-online-boutique-k8s
+  DISPATCH_OWNER: tonyrud
+
 jobs:
   trigger_argocd_release:
     runs-on: ubuntu-latest
@@ -37,8 +42,8 @@ jobs:
           workflow_timeout_seconds: 120
           workflow_job_steps_retry_seconds: 10
           token: ${{ secrets.PAT }}
-          repo: devsecops-online-boutique-k8s
-          owner: tonyrud
+          repo: ${{ env.DISPATCH_REPO }}
+          owner: ${{ env.DISPATCH_OWNER }}
           workflow: trigger_deployment.yaml
           workflow_inputs: '{ "service": "${{ github.event.inputs.target_service }}", "version": "${{ github.event.inputs.target_version }}" }'
       
@@ -46,6 +51,6 @@ jobs:
         uses: Codex-/await-remote-run@v1.0.0
         with:
           token: ${{ secrets.PAT }}
-          repo: return-dispatch
-          owner: codex-
+          repo: ${{ env.DISPATCH_REPO }}
+          owner: ${{ env.DISPATCH_OWNER }}
           run_id: ${{ steps.return_dispatch.outputs.run_id }}
