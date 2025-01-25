@@ -33,12 +33,12 @@ jobs:
         uses: codex-/return-dispatch@v2
         id: return_dispatch
         with:
-          ref: main
-          workflow_timeout_seconds: 120 # Default: 300
+          ref: refs/heads/main
+          workflow_timeout_seconds: 120
+          workflow_job_steps_retry_seconds: 10
           token: ${{ secrets.PAT }}
           repo: devsecops-online-boutique-k8s
           owner: tonyrud
-          workflow_job_steps_retry_seconds: 10
           workflow: trigger_deployment.yaml
           workflow_inputs: '{ "service": "${{ github.event.inputs.target_service }}", "version": "${{ github.event.inputs.target_version }}" }'
       
